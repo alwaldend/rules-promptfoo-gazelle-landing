@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="generator" content="Hugo 0.165.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rules Promptfoo Gazelle</title>
+    
+    <meta name="description" content="Gazelle extension for offline Promptfoo validation tests" />
+     
+    <meta name="github-repo" content="https://github.com/alwaldend/src" />
+      
+    <link rel="stylesheet" href="/scss/landing.min.757a78e91e368eeac2f0cb4833153359a2f027c8e1ec3cf51681f3f623b018da.css" />
+     
+  </head>
+  <body>
+    <header class="landing-topbar">
+      <a class="landing-brand" href="/">Rules Promptfoo Gazelle</a>
+      <nav class="landing-nav" aria-label="Project links">
+        
+        <a href="https://alwaldend.com/docs/projects/rules_promptfoo_gazelle/">Docs</a>
+        
+        <a href="https://github.com/alwaldend/src">Github</a>
+        
+      </nav>
+    </header>
+    <main class="landing-container">
+      <div class="landing-header">
+        <h1>Rules Promptfoo Gazelle</h1>
+        <div class="btn-group" role="group" aria-label="Project links">
+          
+          <a class="btn btn-outline-primary" href="https://alwaldend.com/docs/projects/rules_promptfoo_gazelle/">Docs</a>
+          
+          <a class="btn btn-outline-primary" href="https://github.com/alwaldend/src">Github</a>
+          
+        </div>
+      </div>
+      
+      <p class="landing-description">Gazelle extension for offline Promptfoo validation tests</p>
+       
+      <p class="landing-meta">Built with go.</p>
+      
+      <div class="landing-readme"><p><code>rules_promptfoo_gazelle</code> generates required, offline
+<code>promptfoo_validate_test</code> targets for Promptfoo configurations below an
+<code>evals/</code> directory. It never creates an <code>evals</code> subpackage and never generates
+live <code>promptfoo_test</code> targets.</p>
+<p>Add <code>rules_promptfoo</code> as a normal dependency and this generator as a
+development dependency:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-starlark" data-lang="starlark"><span style="display:flex;"><span>bazel_dep(name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rules_promptfoo&#34;</span>, version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;VERSION&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>bazel_dep(
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rules_promptfoo_gazelle&#34;</span>,
+</span></span><span style="display:flex;"><span>    version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;VERSION&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>    dev_dependency <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>For one-pass skill package creation, also add <code>rules_skill</code> as a normal
+dependency and <code>rules_skill_gazelle</code> as a development dependency:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-starlark" data-lang="starlark"><span style="display:flex;"><span>bazel_dep(name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rules_skill&#34;</span>, version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;VERSION&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>bazel_dep(
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rules_skill_gazelle&#34;</span>,
+</span></span><span style="display:flex;"><span>    version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;VERSION&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>    dev_dependency <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Add both public language targets to the repository&rsquo;s custom Gazelle binary:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-starlark" data-lang="starlark"><span style="display:flex;"><span>load(<span style="color:#e6db74">&#34;@gazelle//:def.bzl&#34;</span>, <span style="color:#e6db74">&#34;gazelle_binary&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>gazelle_binary(
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gazelle_binary&#34;</span>,
+</span></span><span style="display:flex;"><span>    languages <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;@rules_promptfoo_gazelle//gazelle&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;@rules_skill_gazelle//gazelle&#34;</span>,
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>With both extensions installed, a fresh directory containing <code>SKILL.md</code> and a
+conventional Promptfoo configuration receives both <code>skill_library</code> and
+<code>promptfoo_validate_test</code> targets in one Gazelle run; it does not need an
+existing BUILD file.</p>
+<p>The extension recognizes these conventional configuration paths:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>evals/promptfooconfig.yaml
+</span></span><span style="display:flex;"><span>evals/promptfooconfig.&lt;variant&gt;.yaml
+</span></span><span style="display:flex;"><span>evals/promptfooconfig.yml
+</span></span><span style="display:flex;"><span>evals/promptfooconfig.&lt;variant&gt;.json
+</span></span></code></pre></div><p>The default file produces <code>eval_config_test</code>; a variant produces
+<code>eval_&lt;sanitized_variant&gt;_config_test</code>. Variants are lowercased, and runs of
+characters other than ASCII letters and digits become underscores. Colliding
+sanitized names receive a stable path-derived <code>__&lt;8 lowercase hex digits&gt;</code>
+suffix. The double underscore cannot be produced by the sanitizer, so a
+variant cannot claim a collision target&rsquo;s namespace.</p>
+<p>When a non-root containing package has a <code>SKILL.md</code>, each ordinary validation
+target stages that package&rsquo;s conventional <code>:skill</code> target. Repository-root
+skills are unsupported by <code>rules_skill</code>, so a root-package <code>SKILL.md</code> does not
+infer that label. The exact <code>no_skill</code> variant omits <code>skills</code> so it remains a
+control. A generic Promptfoo package without <code>SKILL.md</code> receives no inferred
+skill label. Every non-configuration regular file under <code>evals/</code>, including
+<code>README.md</code> and test cases, is added to <code>data</code> in sorted order. Directories
+containing <code>BUILD</code>, <code>BUILD.bazel</code>, or an additional filename configured as
+valid in Gazelle are package boundaries and are not traversed.</p>
+<p>The extension reconciles <code>config</code>, <code>data</code>, and <code>skills</code> when a discovered
+configuration matches a conventionally named validation target. Adding or
+editing eval files therefore updates those attributes on the next run.
+Removing or renaming a configuration does not delete the old target: a name
+shape is not reliable proof that Gazelle created a rule, so stale targets must
+be removed explicitly. Gazelle&rsquo;s <code># keep</code> semantics remain available at the
+rule, attribute, and individual list-item levels for intentional overrides.
+Other attributes, including <code>args</code>, <code>env</code>, <code>tags</code>, and <code>visibility</code>, remain
+manual and are preserved while the generated target exists. Existing manual
+or live <code>promptfoo_test</code> rules are also left intact.
+The extension does not follow a symlink used as the package&rsquo;s <code>evals</code>
+directory, because it could escape the repository. Such a symlink, or another
+unexpected filesystem scan error including an error while checking a candidate
+package boundary, is a non-destructive no-op rather than a signal to remove
+targets. Before scanning, it also resolves the repository root and package
+directory and refuses a package whose resolved path escapes the workspace,
+including a package reached through Gazelle&rsquo;s symlink-following support. The
+extension manages the shared load for both Promptfoo rule symbols and uses
+Bzlmod&rsquo;s apparent repository name.</p>
+<p>The public <code>@rules_promptfoo_gazelle//gazelle:gazelle_promptfoo</code> binary
+contains only this extension and can update a nested workspace without
+initializing unrelated language plugins from its parent repository.</p>
+</div>
+    </main>
+    <footer class="landing-footer">
+      <p>Generated from the project README.</p>
+    </footer>
+  </body>
+</html>
